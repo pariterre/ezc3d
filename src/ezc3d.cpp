@@ -217,14 +217,14 @@ int ezc3d::c3d::hex2int(
 
     // convert to signed int
     // Find max int value
-    unsigned int max(0);
+    unsigned int max_val(0);
     for (unsigned int i=0; i<len; ++i)
-        max |= 0xFF * static_cast<unsigned int>(pow(0x100, i));
+        max_val |= 0xFF * static_cast<unsigned int>(pow(0x100, i));
 
     // If the value is over uint_max / 2 then it is a negative number
     int out;
-    if (tp > max / 2)
-        out = static_cast<int>(tp - max - 1);
+    if (tp > max_val / 2)
+        out = static_cast<int>(tp - max_val - 1);
     else
         out = static_cast<int>(tp);
 
