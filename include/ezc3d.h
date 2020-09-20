@@ -48,6 +48,16 @@
 #ifdef _WIN32
 #include <string>
 #endif
+#ifdef _MSC_VER
+#include <Windows.h>
+std::wstring ConvertUtf8ToWide(const std::string& str)
+{
+    int count = MultiByteToWideChar(CP_UTF8, 0, str.c_str(), str.length(), NULL, 0);
+    std::wstring wstr(count, 0);
+    MultiByteToWideChar(CP_UTF8, 0, str.c_str(), str.length(), &wstr[0], count);
+    return wstr;
+}
+#endif
 
 #include "ezc3dConfig.h"
 
