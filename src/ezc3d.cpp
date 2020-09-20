@@ -45,12 +45,23 @@ ezc3d::c3d::c3d():
     _data = std::shared_ptr<ezc3d::DataNS::Data>(new ezc3d::DataNS::Data());
 }
 
+#ifdef _MSC_VER
+#include <Windows.h>
+std::wstring ConvertUtf8ToWide(const std::string& str)
+{
+    int count = MultiByteToWideChar(CP_UTF8, 0, str.c_str(), str.length(), NULL, 0);
+    std::wstring wstr(count, 0);
+    MultiByteToWideChar(CP_UTF8, 0, str.c_str(), str.length(), &wstr[0], count);
+    return wstr;
+}
+#endif
+
 ezc3d::c3d::c3d(
         const std::string &filePath):
     _filePath(filePath),
     m_nByteToRead_float(4*ezc3d::DATA_TYPE::BYTE),
     m_nByteToReadMax_int(100) {
-    std::fstream stream(_filePath, std::ios::in | std::ios::binary);
+    std::fstream stream(ConvertUtf8ToWide(_filePath), std::ios::in | std::ios::binary);
     c_float = new char[m_nByteToRead_float + 1];
     c_float_tp = new char[m_nByteToRead_float + 1];
     c_int = new char[m_nByteToReadMax_int + 1];
